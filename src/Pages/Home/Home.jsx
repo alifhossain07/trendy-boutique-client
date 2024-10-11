@@ -2,7 +2,7 @@ import React from 'react';
 
 const Home = () => {
     return (
-        <div>
+        <div className='h-[60vh]'>
             <h1>This Is Home</h1>
         </div>
     );
