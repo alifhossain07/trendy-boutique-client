@@ -1,13 +1,41 @@
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Label, TextInput, Button, Checkbox, Alert } from 'flowbite-react';
+import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from './../../Providers/AuthProvider';
 import Swal from 'sweetalert2';
 
 const Login = () => {
-  const { signIn } = useContext(AuthContext); // Access signIn from AuthContext
+  const { signIn, signInWithGoogle } = useContext(AuthContext); // Access signIn from AuthContext
   const navigate = useNavigate(); // Hook for navigation
+
+  const handleGoogleLogin = async () => {
+    try {
+      const user = await signInWithGoogle(); // Wait for the result from signInWithGoogle
+      console.log("Google user:", user); // Log user info
+  
+      // Show SweetAlert for successful login
+      await Swal.fire({
+        title: 'Login Successful!',
+        text: 'Welcome to Trendy Boutique!',
+        icon: 'success',
+        confirmButtonText: 'Continue',
+      });
+  
+      navigate("/"); // Redirect to home page after SweetAlert confirmation
+    } catch (error) {
+      console.error("Google Sign-In Error:", error);
+      // Show SweetAlert for error
+      await Swal.fire({
+        title: 'Login Failed!',
+        text: error.message || 'An error occurred. Please try again.',
+        icon: 'error',
+        confirmButtonText: 'Close',
+      });
+    }
+  };
+  
 
   const {
     register,
@@ -105,6 +133,13 @@ const Login = () => {
           <Button type="submit" className="w-full bg-blue-500 hover:!bg-blue-400">
             Sign In
           </Button>
+
+          {/* Google Sign-In Button */}
+          <div>
+            <Button type="button" onClick={handleGoogleLogin} className="w-full flex items-center tracking-wider font-para bg-sky-400 hover:!bg-sky-300">
+              <FcGoogle className="text-2xl mr-5" /> Sign In With Google
+            </Button>
+          </div>
 
           {/* Forgot Password and Register Links */}
           <div className="text-sm text-center">

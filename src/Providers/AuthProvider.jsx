@@ -7,6 +7,7 @@ import {
   signOut,
   GoogleAuthProvider,
   signInWithPopup,
+  updateProfile
 } from "firebase/auth";
 import app from "./../Firebase/firebase.config";
 
@@ -25,17 +26,25 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   // Sign up with email and password, including photoURL
-  const createUser = async (email, password, photoURL) => {
+  const createUser = async (email, password, displayName, photoURL) => {
     setLoading(true);
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const newUser = userCredential.user;
-
-    console.log("User registered:", newUser); // Log user info on registration
-    setUser({ ...newUser, photoURL }); // Set user state with photoURL
-
-    // Save user data in the database
-   
-    setLoading(false);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      // Update user profile with display name and photo URL
+      await user.updateProfile({
+        displayName: displayName,
+        photoURL: photoURL,
+      });
+  
+      console.log('User registered:', user);
+      setUser(user);
+    } catch (error) {
+      console.error('Error creating user:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Sign in with email and password
@@ -51,14 +60,24 @@ const AuthProvider = ({ children }) => {
 
   // Sign in with Google
   const signInWithGoogle = async () => {
-    setLoading(true);
-    const userCredential = await signInWithPopup(auth, googleProvider);
-    const googleUser = userCredential.user;
-
-    console.log("User logged in with Google:", googleUser); // Log user info on Google login
-    setUser(googleUser); // Set user state
-    setLoading(false);
+    setLoading(true); // Set loading state to true
+    try {
+      const userCredential = await signInWithPopup(auth, googleProvider);
+      const googleUser = userCredential.user;
+  
+      console.log("User logged in with Google:", googleUser); // Log user info on Google login
+      setUser(googleUser); // Set user state
+      return googleUser; // Return googleUser for further use
+    } catch (error) {
+      console.error("Google Sign-In Error:", error);
+      // Handle any errors that occur during sign-in
+      throw error; // Rethrow the error to be caught in the calling function
+    } finally {
+      setLoading(false); // Always set loading state to false at the end
+    }
   };
+  
+  
 
   // Log out
   const logOut = async () => {
