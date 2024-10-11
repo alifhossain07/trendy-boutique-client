@@ -7,6 +7,7 @@ import { FaSearch } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import { AuthContext } from "./../../Providers/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -14,14 +15,32 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleSignOut = () => {
-    logOut()
-      .then(() => {
-        console.log("User signed out");
-        navigate("/");
-      })
-      .catch((error) => {
-        console.error("Sign-Out Error:", error);
-      });
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you really want to sign out?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, sign me out!',
+      cancelButtonText: 'No, keep me signed in'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logOut()
+          .then(() => {
+            console.log("User signed out");
+            Swal.fire(
+              'Signed Out!',
+              'You have been successfully signed out.',
+              'success'
+            );
+            navigate("/");
+          })
+          .catch((error) => {
+            console.error("Sign-Out Error:", error);
+          });
+      }
+    });
   };
 
   const handleSearch = () => {
