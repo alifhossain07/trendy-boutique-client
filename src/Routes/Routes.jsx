@@ -4,6 +4,8 @@ import Root from "../Root/Root";
 import Home from "../Pages/Home/Home";
 import Login from "../Shared/Login/Login";
 import Register from "../Shared/Register/Register";
+import AboutUs from "../Pages/AboutUs/AboutUs";
+import Shop from "../Pages/Shop/Shop";
 
 
 
@@ -23,6 +25,14 @@ const routes = createBrowserRouter([
       {
         path: "/register",
         element: <Register></Register>,       
+      },
+      {
+        path: "/aboutus",
+        element: <AboutUs></AboutUs>,       
+      },
+      {
+        path: "/shop",
+        element: <Shop></Shop>,       
       },
       
     ]

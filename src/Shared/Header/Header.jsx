@@ -60,11 +60,10 @@ const Header = () => {
             alt="Flowbite React Logo"
           />
           <Navbar.Collapse className="md:flex md:space-x-4">
-            <Navbar.Link href="#" active>
-              Home
-            </Navbar.Link>
-            <Navbar.Link href="#">About</Navbar.Link>
-            <Navbar.Link href="#">Shop</Navbar.Link>
+          <Link to="/">Home</Link>
+            <Link to="/aboutus">About</Link>
+            <Link to="/shop">Shop</Link>
+           
            
             <Navbar.Link href="#">Contact</Navbar.Link>
           </Navbar.Collapse>
