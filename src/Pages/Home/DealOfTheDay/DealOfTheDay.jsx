@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 const DealOfTheDay = () => {
   const calculateTimeLeft = () => {
-    const dealEndTime = new Date("2024-10-31T23:59:59").getTime(); // Set your deal end time here
+    const dealEndTime = new Date("2024-11-31T23:59:59").getTime(); // Set your deal end time here
     const now = new Date().getTime();
     const difference = dealEndTime - now;
 
