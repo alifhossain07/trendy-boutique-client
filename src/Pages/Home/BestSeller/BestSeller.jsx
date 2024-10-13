@@ -26,7 +26,7 @@ const BestSeller = () => {
   ];
 
   return (
-    <div className="w-11/12 mx-auto py-20">
+    <div className="w-11/12 mx-auto py-10">
       <h1 className="text-2xl lg:text-3xl font-title uppercase tracking-wider font-bold mb-16">
         Our Best <span className="text-blue-700">Sellers</span>
       </h1>
