@@ -7,6 +7,7 @@ import BestSeller from './BestSeller/BestSeller';
 import DealOfTheDay from './DealOfTheDay/DealOfTheDay';
 import Testimonial from './Testimonial/Testimonial';
 import BlackSale from './BlackSale/BlackSale';
+import HomeContact from './HomeContact/HomeContact';
 
 const Home = () => {
     return (
@@ -28,6 +29,7 @@ const Home = () => {
             <BestSeller></BestSeller>
             <DealOfTheDay></DealOfTheDay>
             <Testimonial></Testimonial>
+            <HomeContact></HomeContact>
         </div>
     );
 };
