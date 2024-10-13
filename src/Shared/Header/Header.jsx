@@ -1,9 +1,7 @@
 import React, { useState, useContext } from "react";
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { Avatar, Dropdown, Navbar, Button, Drawer } from "flowbite-react"; // Import Drawer
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { Button } from "flowbite-react";
-import { FaRegHeart } from "react-icons/fa";
-import { FaSearch } from "react-icons/fa";
+import { FaRegHeart, FaSearch } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import { AuthContext } from "./../../Providers/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,6 +11,7 @@ const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { user, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State for the drawer
 
   const handleSignOut = () => {
     Swal.fire({
@@ -50,8 +49,12 @@ const Header = () => {
     }
   };
 
+  const handleDrawerToggle = () => {
+    setIsDrawerOpen((prev) => !prev); // Toggle drawer state
+  };
+
   return (
-    <div className="p-2 shadow-xl">
+    <div className="shadow-xl fixed w-full z-50">
       <Navbar fluid rounded>
         <Navbar.Brand className="flex items-center font-title" href="https://github.com/alifhossain07">
           <img
@@ -60,11 +63,9 @@ const Header = () => {
             alt="Flowbite React Logo"
           />
           <Navbar.Collapse className="md:flex md:space-x-4">
-          <Link to="/">Home</Link>
+            <Link to="/">Home</Link>
             <Link to="/aboutus">About</Link>
             <Link to="/shop">Shop</Link>
-           
-           
             <Navbar.Link href="#">Contact</Navbar.Link>
           </Navbar.Collapse>
         </Navbar.Brand>
@@ -113,7 +114,7 @@ const Header = () => {
             <FaRegHeart className="mr-3 text-2xl lg:mr-6" />
           </button>
 
-          <button className="relative bg-white flex items-center px-2 py-2 text-black mr-3 lg:mr-8">
+          <button onClick={handleDrawerToggle} className="relative bg-white flex items-center px-2 py-2 text-black mr-3 lg:mr-8">
             <AiOutlineShoppingCart className="text-3xl" />
             <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 inline-flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-black rounded-full">
               +98
@@ -166,6 +167,25 @@ const Header = () => {
           </Dropdown>
         </div>
       </Navbar>
+
+      {/* Drawer Implementation */}
+      <Drawer open={isDrawerOpen} onClose={handleDrawerToggle} position="right">
+        <Drawer.Header title="Your Cart" />
+        <Drawer.Items>
+          <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
+            Your shopping cart items go here.
+          </p>
+          <div className="grid grid-cols-1 gap-4">
+            {/* Sample item, replace with dynamic data later */}
+            <div className="rounded-lg border border-gray-200 bg-white p-4">
+              <h3 className="font-semibold">Item Name</h3>
+              <p>Price: $XX.XX</p>
+              <Button onClick={() => alert("Item removed!")}>Remove</Button>
+            </div>
+            {/* Add more items as needed */}
+          </div>
+        </Drawer.Items>
+      </Drawer>
     </div>
   );
 };
