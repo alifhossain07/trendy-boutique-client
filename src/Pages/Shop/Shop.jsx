@@ -1,7 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { Modal, Button } from "flowbite-react"; // Import Flowbite modal and button
+import 'flowbite'; // Ensure Flowbite is imported
+import { AuthContext } from "../../Providers/AuthProvider";
+
 
 const Shop = () => {
+    const { user } = useContext(AuthContext);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -10,7 +15,9 @@ const Shop = () => {
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
   const [isStockFilter, setIsStockFilter] = useState("");
-  const [sortOrder, setSortOrder] = useState(""); // State for sorting order
+  const [sortOrder, setSortOrder] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   // Fetch products from API
   useEffect(() => {
@@ -72,11 +79,43 @@ const Shop = () => {
     applyFilters();
   }, [selectedCategory, selectedSubcategory, priceRange, isStockFilter, sortOrder]);
 
+  // Handle modal opening
+  const openProductModal = (product) => {
+    setSelectedProduct(product);
+    setOpenModal(true);
+  };
+
+  const closeModal = () => {
+    setOpenModal(false);
+    setSelectedProduct(null);
+  };
+
   // Handle clicking on "All Products"
   const showAllProducts = () => {
     setSelectedCategory("");
     setSelectedSubcategory("");
     setIsStockFilter(""); // Reset stock filter to show all products regardless of stock status
+  };
+
+  const addToCart = async (product) => {
+    if (!user || !user.email) {
+      alert("Please log in to add items to the cart.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:5000/cart", {
+        productName: product.productName,
+        price: product.price,
+        image: product.image,
+        userEmail: user.email, // Pass the user's email
+      });
+      console.log("Item added to cart:", response.data);
+      alert("Item added to cart!");
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      alert("Failed to add item to cart.");
+    }
   };
 
   return (
@@ -103,7 +142,7 @@ const Shop = () => {
       {/* Shopping Section */}
       <div className="flex w-11/12 mx-auto py-20">
         {/* Filter Section */}
-        <div className="border bg-gray-100 border-gray-500 w-1/4 p-4">
+        <div className=" bg-gray-100  w-1/4 p-4">
           <h2 className="font-title text-2xl mb-4">Categories</h2>
           <div className="flex flex-col mb-4">
             <button
@@ -177,7 +216,7 @@ const Shop = () => {
         </div>
 
         {/* Products Section */}
-        <div className="border w-9/12 border-gray-500 p-4">
+        <div className=" w-9/12 p-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="font-title text-2xl">Products</h2>
             {/* Sorting Dropdown */}
@@ -192,28 +231,68 @@ const Shop = () => {
             </select>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 ">
             {filteredProducts.map((product, index) => (
               <div key={index} className="border p-4 rounded-md shadow-md relative">
                 {product.isDiscount && (
-                  <span className="absolute top-2 right-2 bg-red-500 text-white text-sm font-bold px-2 py-1 rounded-full">
-                    Discount
+                  <span className="absolute top-2 right-2  bg-red-500 text-white text-sm font-bold px-2 py-1 rounded-full">
+                    {product.discount}
                   </span>
                 )}
-                <img src={product.image} alt={product.productName} className="h-40 object-cover rounded-md mb-2" />
+                <img
+                  src={product.image}
+                  alt={product.productName}
+                  className="h-60 w-full object-cover rounded-md mb-2"
+                />
                 <h3 className="font-title text-lg">{product.productName}</h3>
-                <p className="font-para">Price: ${product.price}</p>
-                <p className="font-para">Discount: {product.discount}</p>
-                <p className="font-para">Rating: {product.rating}</p>
-                <p className="font-para">{product.details}</p>
-                <p className={`font-para ${product.isStock ? "text-green-500" : "text-red-500"}`}>
-                  {product.isStock ? "In Stock" : "Out of Stock"}
-                </p>
+                <p className="font-para text-lg font-semibold">Price: ${product.price}</p>
+                <button
+                  onClick={() => openProductModal(product)} // Open the modal with the selected product
+                  className="w-full bg-blue-500 text-white py-2 rounded-md mt-4 font-para"
+                >
+                  View Details
+                </button>
               </div>
             ))}
           </div>
         </div>
       </div>
+
+      {/* Product Details Modal */}
+      {selectedProduct && (
+        <Modal dismissible show={openModal} onClose={closeModal}>
+          <Modal.Header className="font-title">{selectedProduct.productName}</Modal.Header>
+          <Modal.Body>
+            <div className="space-y-6">
+              <img
+                src={selectedProduct.image}
+                alt={selectedProduct.productName}
+                className="h-5/6 w-full object-cover rounded-md mb-4"
+              />
+              <p className="text-base  font-para leading-relaxed text-gray-500 dark:text-gray-400">
+                Price: ${selectedProduct.price}
+              </p>
+              <p className="text-base leading-relaxed font-para text-gray-500 dark:text-gray-400">
+                Rating: {selectedProduct.rating}
+              </p>
+              <p className="text-base leading-relaxed font-para text-gray-500 dark:text-gray-400 mb-4">
+                {selectedProduct.details}
+              </p>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+          <Button className="bg-blue-500 hover:!bg-blue-400 font-para" onClick={() => addToCart(selectedProduct)}>
+    Add to Cart
+</Button>
+            <Button className="bg-orange-500 hover:!bg-orange-300 font-para" onClick={() => { closeModal(); /* Add to cart functionality */ }}>
+              Add to Wishlist
+            </Button>
+            <Button  className=" font-para" color="gray" onClick={closeModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </div>
   );
 };
