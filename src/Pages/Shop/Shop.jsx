@@ -8,8 +8,9 @@ const Shop = () => {
   const [subcategories, setSubcategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 }); // Price range state
-  const [isStockFilter, setIsStockFilter] = useState(""); // Stock filter state: 'in', 'out', or '' for all products
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
+  const [isStockFilter, setIsStockFilter] = useState("");
+  const [sortOrder, setSortOrder] = useState(""); // State for sorting order
 
   // Fetch products from API
   useEffect(() => {
@@ -54,13 +55,22 @@ const Shop = () => {
       filtered = filtered.filter(product => isStockFilter === "in" ? product.isStock : !product.isStock);
     }
 
+    // Apply sorting based on selected sort order
+    if (sortOrder === "priceLowToHigh") {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (sortOrder === "priceHighToLow") {
+      filtered.sort((a, b) => b.price - a.price);
+    } else if (sortOrder === "alphabetical") {
+      filtered.sort((a, b) => a.productName.localeCompare(b.productName));
+    }
+
     setFilteredProducts(filtered);
   };
 
   // Call `applyFilters` whenever a filter changes
   useEffect(() => {
     applyFilters();
-  }, [selectedCategory, selectedSubcategory, priceRange, isStockFilter]);
+  }, [selectedCategory, selectedSubcategory, priceRange, isStockFilter, sortOrder]);
 
   // Handle clicking on "All Products"
   const showAllProducts = () => {
@@ -168,7 +178,20 @@ const Shop = () => {
 
         {/* Products Section */}
         <div className="border w-9/12 border-gray-500 p-4">
-          <h2 className="font-title text-2xl mb-4">Products</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="font-title text-2xl">Products</h2>
+            {/* Sorting Dropdown */}
+            <select
+              className="p-2 border border-gray-300 rounded-md"
+              onChange={(e) => setSortOrder(e.target.value)}
+            >
+              <option value="">Sort By</option>
+              <option value="priceLowToHigh">Price: Low to High</option>
+              <option value="priceHighToLow">Price: High to Low</option>
+              <option value="alphabetical">Alphabetical: A-Z</option>
+            </select>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredProducts.map((product, index) => (
               <div key={index} className="border p-4 rounded-md shadow-md relative">
