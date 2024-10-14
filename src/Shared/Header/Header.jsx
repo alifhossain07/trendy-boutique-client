@@ -11,7 +11,8 @@ const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { user, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State for the drawer
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false); // State for the cart drawer
+  const [isWishlistDrawerOpen, setIsWishlistDrawerOpen] = useState(false); // State for the wishlist drawer
 
   const handleSignOut = () => {
     Swal.fire({
@@ -49,8 +50,12 @@ const Header = () => {
     }
   };
 
-  const handleDrawerToggle = () => {
-    setIsDrawerOpen((prev) => !prev); // Toggle drawer state
+  const handleCartDrawerToggle = () => {
+    setIsCartDrawerOpen((prev) => !prev); // Toggle cart drawer state
+  };
+
+  const handleWishlistDrawerToggle = () => {
+    setIsWishlistDrawerOpen((prev) => !prev); // Toggle wishlist drawer state
   };
 
   return (
@@ -110,11 +115,11 @@ const Header = () => {
           </Dropdown>
 
           {/* Wishlist and Cart */}
-          <button>
+          <button onClick={handleWishlistDrawerToggle}>
             <FaRegHeart className="mr-3 text-2xl lg:mr-6" />
           </button>
 
-          <button onClick={handleDrawerToggle} className="relative bg-white flex items-center px-2 py-2 text-black mr-3 lg:mr-8">
+          <button onClick={handleCartDrawerToggle} className="relative bg-white flex items-center px-2 py-2 text-black mr-3 lg:mr-8">
             <AiOutlineShoppingCart className="text-3xl" />
             <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 inline-flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-black rounded-full">
               +98
@@ -168,21 +173,40 @@ const Header = () => {
         </div>
       </Navbar>
 
-      {/* Drawer Implementation */}
-      <Drawer open={isDrawerOpen} onClose={handleDrawerToggle} position="right">
+      {/* Cart Drawer Implementation */}
+      <Drawer open={isCartDrawerOpen} onClose={handleCartDrawerToggle} position="right">
         <Drawer.Header title="Your Cart" />
         <Drawer.Items>
           <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
             Your shopping cart items go here.
           </p>
           <div className="grid grid-cols-1 gap-4">
-            {/* Sample item, replace with dynamic data later */}
+            {/* Sample cart item, replace with dynamic data later */}
             <div className="rounded-lg border border-gray-200 bg-white p-4">
-              <h3 className="font-semibold">Item Name</h3>
+              <h3 className="font-semibold">Cart Item Name</h3>
               <p>Price: $XX.XX</p>
               <Button onClick={() => alert("Item removed!")}>Remove</Button>
             </div>
-            {/* Add more items as needed */}
+            {/* Add more cart items as needed */}
+          </div>
+        </Drawer.Items>
+      </Drawer>
+
+      {/* Wishlist Drawer Implementation */}
+      <Drawer open={isWishlistDrawerOpen} onClose={handleWishlistDrawerToggle} position="right">
+        <Drawer.Header title="Your Wishlist" />
+        <Drawer.Items>
+          <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
+            Your wishlist items go here.
+          </p>
+          <div className="grid grid-cols-1 gap-4">
+            {/* Sample wishlist item, replace with dynamic data later */}
+            <div className="rounded-lg border border-gray-200 bg-white p-4">
+              <h3 className="font-semibold">Wishlist Item Name</h3>
+              <p>Price: $XX.XX</p>
+              <Button onClick={() => alert("Item removed!")}>Remove</Button>
+            </div>
+            {/* Add more wishlist items as needed */}
           </div>
         </Drawer.Items>
       </Drawer>
