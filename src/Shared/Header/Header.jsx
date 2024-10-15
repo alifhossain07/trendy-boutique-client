@@ -170,7 +170,7 @@ const Header = () => {
       <Navbar fluid rounded>
         <Navbar.Brand
           className="flex items-center font-title"
-          href="https://github.com/alifhossain07"
+          
         >
           <img
             src="https://i.ibb.co/drCQPSv/mlogo1.png"
@@ -260,7 +260,7 @@ const Header = () => {
                     {user.email}
                   </span>
                 </Dropdown.Header>
-                <Link to="/dashboard">
+                <Link to="/admindashboard/dashboardhome">
                   <Dropdown.Item>Dashboard</Dropdown.Item>
                 </Link>
                 <Link to="/settings">
