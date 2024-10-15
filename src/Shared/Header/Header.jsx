@@ -10,12 +10,13 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const Header = () => {
+  const [quantities, setQuantities] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const { user, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
   const [isWishlistDrawerOpen, setIsWishlistDrawerOpen] = useState(false);
-
+ 
   // Fetch cart items using TanStack Query
   const {
     data: cartItems = [],
@@ -34,7 +35,37 @@ const Header = () => {
     },
     enabled: !!user, // Only run the query if the user is logged in
   });
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      const initialQuantities = cartItems.reduce((acc, item) => {
+        acc[item._id] = item.quantity || 1; // Initialize quantity for each item
+        return acc;
+      }, {});
+      setQuantities(initialQuantities);
+    }
+  }, [cartItems]);
 
+  // Calculate total price
+  const totalPrice = cartItems.reduce((acc, item) => {
+    const quantity = quantities[item._id] || 1;
+    return acc + item.price * quantity;
+  }, 0);
+
+  // Handle increasing the quantity
+  const handleIncreaseQuantity = (productId) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [productId]: prev[productId] + 1,
+    }));
+  };
+
+  // Handle decreasing the quantity
+  const handleDecreaseQuantity = (productId) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [productId]: Math.max(prev[productId] - 1, 1), // Ensure quantity doesn't go below 1
+    }));
+  };
   // Fetch wishlist items using TanStack Query
   const {
     data: wishlistItems = [],
@@ -256,35 +287,61 @@ const Header = () => {
       </Navbar>
 
       {/* Cart Drawer Implementation */}
-      <Drawer
-        open={isCartDrawerOpen}
-        onClose={handleCartDrawerToggle}
-        position="right"
-      >
-        <Drawer.Header title="Your Cart" />
-        <Drawer.Items>
-          <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
-            Your shopping cart items go here.
-          </p>
-          <div className="grid grid-cols-1 gap-4">
-            {cartItems.length > 0 ? (
-              cartItems.map((item) => (
-                <div
-                  key={item._id}
-                  className="rounded-lg border border-gray-200 space-y-2 bg-white p-4"
+      <Drawer open={isCartDrawerOpen} onClose={handleCartDrawerToggle} position="right">
+  <div className="flex flex-col h-full">
+    {/* Fixed header with title */}
+    <Drawer.Header title="Your Cart" className="bg-white" />
+
+    {/* Scrollable items area */}
+    <div className="flex-1 overflow-auto px-4">
+      <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
+        Your shopping cart items go here.
+      </p>
+      <div className="grid grid-cols-1 gap-4">
+        {cartItems.length > 0 ? (
+          cartItems.map((item) => (
+            <div
+              key={item._id}
+              className="rounded-lg border border-gray-200 space-y-2 bg-white p-4"
+            >
+              <img className="h-32" src={item.image} alt="" />
+              <h3 className="font-semibold">{item.productName}</h3>
+              <p>Price: ${item.price}</p>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => handleDecreaseQuantity(item._id)}
+                  className="px-2 py-1 border rounded"
                 >
-                <img className="h-32" src={item.image} alt="" />
-                  <h3 className="font-semibold">{item.productName}</h3>
-                  <p>Price: ${item.price}</p>
-                  <Button className="bg-blue-700 hover:!bg-blue-500" onClick={() => handleRemoveFromCart(item._id)}>Remove</Button>
-                </div>
-              ))
-            ) : (
-              <p>Your cart is empty.</p>
-            )}
-          </div>
-        </Drawer.Items>
-      </Drawer>
+                  -
+                </button>
+                <span>{quantities[item._id]}</span>
+                <button
+                  onClick={() => handleIncreaseQuantity(item._id)}
+                  className="px-2 py-1 border rounded"
+                >
+                  +
+                </button>
+              </div>
+              <Button className="bg-blue-700 hover:!bg-blue-500" onClick={() => handleRemoveFromCart(item._id)}>
+                Remove
+              </Button>
+            </div>
+          ))
+        ) : (
+          <p>Your cart is empty.</p>
+        )}
+      </div>
+    </div>
+
+    {/* Fixed total price and checkout section */}
+    <div className="border-t p-4 bg-white sticky bottom-0 w-full">
+      <h3 className="text-xl font-semibold">Total Price: ${totalPrice.toFixed(2)}</h3>
+      <Button className="mt-4 bg-green-600 hover:bg-green-500 w-full">Proceed to Checkout</Button>
+    </div>
+  </div>
+</Drawer>
+
+
 
       {/* Wishlist Drawer Implementation */}
       <Drawer
