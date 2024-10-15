@@ -229,7 +229,7 @@ const Shop = () => {
       </div>
 
       {/* Shopping Section */}
-      <div className="flex w-11/12 mx-auto py-20">
+      <div className="flex w-11/12 mx-auto py-20 gap-10">
         {/* Filter Section */}
         <div className="bg-gray-100 w-1/4 p-4">
           <h2 className="font-title text-2xl mb-4">Categories</h2>
@@ -287,7 +287,6 @@ const Shop = () => {
             onChange={(e) => setIsStockFilter(e.target.value)}
             className="border p-1 mb-4"
           >
-            <option value="">All</option>
             <option value="in">In Stock</option>
             <option value="out">Out of Stock</option>
           </select>
@@ -308,24 +307,34 @@ const Shop = () => {
         <div className="grid grid-cols-3 gap-4 w-3/4">
           {filteredProducts.map((product) => (
             <div
-              key={product.productName}
-              className="bg-white shadow-lg rounded-lg p-4"
-            >
-              <img
-                src={product.image}
-                alt={product.productName}
-                className="w-full h-96 object-cover rounded-lg"
-              />
-              <h3 className="font-title text-lg">{product.productName}</h3>
-              <p className="font-para">Price: ${product.price}</p>
-              <p className="font-para">Rating: {product.rating}</p>
-              <Button
-                onClick={() => openProductModal(product)}
-                className="mt-2"
-              >
-                View Details
-              </Button>
-            </div>
+  key={product.productName}
+  className="bg-white shadow-lg rounded-lg p-4"
+>
+  <div className="relative">
+    <img
+      src={product.image}
+      alt={product.productName}
+      className="w-full h-96 object-cover rounded-lg"
+    />
+    {product.isDiscount && (
+      <div className="absolute top-4 right-4 bg-red-600 text-white p-2 rounded-full flex items-center justify-center shadow-md transform transition-all duration-300 hover:scale-105">
+        <p className="text-xs font-bold">{product.discount}</p>
+      </div>
+    )}
+  </div>
+  <h3 className="font-title text-lg mt-5 mb-5">
+    {product.productName}
+  </h3>
+  <p className="font-para mb-5">Price: ${product.price}</p>
+  <p className="font-para">Rating: {product.rating}</p>
+  <Button
+    onClick={() => openProductModal(product)}
+    className="w-full mt-5 bg-blue-700 hover:!bg-blue-500"
+  >
+    View Details
+  </Button>
+</div>
+
           ))}
         </div>
       </div>
@@ -338,17 +347,23 @@ const Shop = () => {
             <img
               src={selectedProduct.image}
               alt={selectedProduct.productName}
-              className="w-full h-32 object-cover rounded-lg mb-4"
+              className="w-full h-full object-cover rounded-lg mb-4"
             />
             <p className="font-para">Price: ${selectedProduct.price}</p>
             <p className="font-para">Rating: {selectedProduct.rating}</p>
             <p className="font-para">{selectedProduct.details}</p>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => addToCartMutation.mutate(selectedProduct)}>
+            <Button
+              className="bg-blue-700 hover:!bg-blue-500"
+              onClick={() => addToCartMutation.mutate(selectedProduct)}
+            >
               Add to Cart
             </Button>
-            <Button onClick={() => addToWishlist(selectedProduct)}>
+            <Button
+              className="bg-orange-500 hover:!bg-orange-400"
+              onClick={() => addToWishlist(selectedProduct)}
+            >
               Add to Wishlist
             </Button>
             <Button color="gray" onClick={closeModal}>
