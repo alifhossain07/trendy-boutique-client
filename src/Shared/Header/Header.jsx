@@ -1,38 +1,112 @@
-import React, { useState, useContext } from "react";
-import { Avatar, Dropdown, Navbar, Button, Drawer } from "flowbite-react"; // Import Drawer
+import React, { useState, useEffect, useContext } from "react";
+import { Avatar, Dropdown, Navbar, Button, Drawer } from "flowbite-react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FaRegHeart, FaSearch } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import { AuthContext } from "./../../Providers/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2'; // Import SweetAlert2
+import Swal from "sweetalert2";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { user, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false); // State for the cart drawer
-  const [isWishlistDrawerOpen, setIsWishlistDrawerOpen] = useState(false); // State for the wishlist drawer
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
+  const [isWishlistDrawerOpen, setIsWishlistDrawerOpen] = useState(false);
+
+  // Fetch cart items using TanStack Query
+  const {
+    data: cartItems = [],
+    refetch: refetchCart,
+    error: cartError,
+  } = useQuery({
+    queryKey: ["cartItems", user?.email], // Unique key for the query
+    queryFn: async () => {
+      if (user?.email) {
+        const response = await axios.get("http://localhost:5000/cart", {
+          params: { userEmail: user.email },
+        });
+        return response.data;
+      }
+      return []; // Return an empty array if the user is not logged in
+    },
+    enabled: !!user, // Only run the query if the user is logged in
+  });
+
+  // Fetch wishlist items using TanStack Query
+  const {
+    data: wishlistItems = [],
+    refetch,
+    error: wishlistError,
+  } = useQuery({
+    queryKey: ["wishlistItems", user?.email],
+    queryFn: async () => {
+      if (user?.email) {
+        const response = await axios.get("http://localhost:5000/wishlist", {
+          params: { userEmail: user.email },
+        });
+        return response.data;
+      }
+      return []; // Return an empty array if the user is not logged in
+    },
+    enabled: !!user, // Only run the query if the user is logged in
+  });
+
+  useEffect(() => {
+    if (cartError) {
+      console.error("Error fetching cart items:", cartError);
+    }
+    if (wishlistError) {
+      console.error("Error fetching wishlist items:", wishlistError);
+    }
+  }, [cartError, wishlistError]);
+
+  const handleRemoveFromCart = async (productId) => {
+    try {
+      await axios.delete("http://localhost:5000/cart", {
+        params: { userEmail: user.email, productId: productId },
+      });
+      refetchCart(); // Refetch cart items after removal
+      Swal.fire("Removed!", "Item removed from cart.", "success");
+    } catch (error) {
+      console.error("Error removing item from cart:", error);
+      Swal.fire("Error", "Could not remove the item from cart.", "error");
+    }
+  };
+  const handleRemoveFromWishlist = async (productId) => {
+    try {
+      await axios.delete("http://localhost:5000/wishlist", {
+        params: { userEmail: user.email, productId: productId },
+      });
+      refetchWishlist(); // Refetch wishlist items after removal
+      Swal.fire("Removed!", "Item removed from wishlist.", "success");
+    } catch (error) {
+      console.error("Error removing item from wishlist:", error);
+      Swal.fire("Error", "Could not remove the item from wishlist.", "error");
+    }
+  };
 
   const handleSignOut = () => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "Do you really want to sign out?",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, sign me out!',
-      cancelButtonText: 'No, keep me signed in'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, sign me out!",
+      cancelButtonText: "No, keep me signed in",
     }).then((result) => {
       if (result.isConfirmed) {
         logOut()
           .then(() => {
             console.log("User signed out");
             Swal.fire(
-              'Signed Out!',
-              'You have been successfully signed out.',
-              'success'
+              "Signed Out!",
+              "You have been successfully signed out.",
+              "success"
             );
             navigate("/");
           })
@@ -51,17 +125,22 @@ const Header = () => {
   };
 
   const handleCartDrawerToggle = () => {
-    setIsCartDrawerOpen((prev) => !prev); // Toggle cart drawer state
+    setIsCartDrawerOpen((prev) => !prev);
+    refetchCart(); // Refetch cart items when the drawer is opened
   };
 
   const handleWishlistDrawerToggle = () => {
-    setIsWishlistDrawerOpen((prev) => !prev); // Toggle wishlist drawer state
+    setIsWishlistDrawerOpen((prev) => !prev);
+    refetchWishlist(); // Refetch wishlist items when the drawer is opened
   };
 
   return (
     <div className="shadow-xl fixed w-full z-50">
       <Navbar fluid rounded>
-        <Navbar.Brand className="flex items-center font-title" href="https://github.com/alifhossain07">
+        <Navbar.Brand
+          className="flex items-center font-title"
+          href="https://github.com/alifhossain07"
+        >
           <img
             src="https://i.ibb.co/drCQPSv/mlogo1.png"
             className="mr-10 text-center mb-4 w-36"
@@ -119,10 +198,13 @@ const Header = () => {
             <FaRegHeart className="mr-3 text-2xl lg:mr-6" />
           </button>
 
-          <button onClick={handleCartDrawerToggle} className="relative bg-white flex items-center px-2 py-2 text-black mr-3 lg:mr-8">
+          <button
+            onClick={handleCartDrawerToggle}
+            className="relative bg-white flex items-center px-2 py-2 text-black mr-3 lg:mr-8"
+          >
             <AiOutlineShoppingCart className="text-3xl" />
             <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 inline-flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-black rounded-full">
-              +98
+              {cartItems.length} {/* Show the number of items in the cart */}
             </span>
           </button>
 
@@ -174,39 +256,63 @@ const Header = () => {
       </Navbar>
 
       {/* Cart Drawer Implementation */}
-      <Drawer open={isCartDrawerOpen} onClose={handleCartDrawerToggle} position="right">
+      <Drawer
+        open={isCartDrawerOpen}
+        onClose={handleCartDrawerToggle}
+        position="right"
+      >
         <Drawer.Header title="Your Cart" />
         <Drawer.Items>
           <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
             Your shopping cart items go here.
           </p>
           <div className="grid grid-cols-1 gap-4">
-            {/* Sample cart item, replace with dynamic data later */}
-            <div className="rounded-lg border border-gray-200 bg-white p-4">
-              <h3 className="font-semibold">Cart Item Name</h3>
-              <p>Price: $XX.XX</p>
-              <Button onClick={() => alert("Item removed!")}>Remove</Button>
-            </div>
-            {/* Add more cart items as needed */}
+            {cartItems.length > 0 ? (
+              cartItems.map((item) => (
+                <div
+                  key={item._id}
+                  className="rounded-lg border border-gray-200 space-y-2 bg-white p-4"
+                >
+                <img className="h-32" src={item.image} alt="" />
+                  <h3 className="font-semibold">{item.productName}</h3>
+                  <p>Price: ${item.price}</p>
+                  <Button className="bg-blue-700 hover:!bg-blue-500" onClick={() => handleRemoveFromCart(item._id)}>Remove</Button>
+                </div>
+              ))
+            ) : (
+              <p>Your cart is empty.</p>
+            )}
           </div>
         </Drawer.Items>
       </Drawer>
 
       {/* Wishlist Drawer Implementation */}
-      <Drawer open={isWishlistDrawerOpen} onClose={handleWishlistDrawerToggle} position="right">
+      <Drawer
+        open={isWishlistDrawerOpen}
+        onClose={handleWishlistDrawerToggle}
+        position="right"
+      >
         <Drawer.Header title="Your Wishlist" />
         <Drawer.Items>
           <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
             Your wishlist items go here.
           </p>
           <div className="grid grid-cols-1 gap-4">
-            {/* Sample wishlist item, replace with dynamic data later */}
-            <div className="rounded-lg border border-gray-200 bg-white p-4">
-              <h3 className="font-semibold">Wishlist Item Name</h3>
-              <p>Price: $XX.XX</p>
-              <Button onClick={() => alert("Item removed!")}>Remove</Button>
-            </div>
-            {/* Add more wishlist items as needed */}
+            {wishlistItems.length > 0 ? (
+              wishlistItems.map((item) => (
+                <div
+                  key={item._id}
+                  className="rounded-lg border border-gray-200 bg-white p-4"
+                >
+                  <h3 className="font-semibold">{item.productName}</h3>
+                  <Button onClick={() => handleRemoveFromWishlist(item._id)}>
+                    Remove
+                  </Button>
+                </div>
+              ))
+            ) : (
+              <p>Your wishlist is empty.</p>
+            )}
           </div>
         </Drawer.Items>
       </Drawer>
