@@ -10,6 +10,7 @@ import ProductsManagement from './../AdminDashboard/ProductsManagement';
 import HomeDashboard from './../AdminDashboard/HomeDashboard';
 import UserManagement from './../AdminDashboard/UserManagement';
 import AddProduct from "../AdminDashboard/AddProduct";
+import Checkout from "../Pages/Checkout/Checkout";
 
 const routes = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const routes = createBrowserRouter([
       {
         path: "/shop",
         element: <Shop />,
+      },
+      {
+        path: "/checkout",
+        element: <Checkout></Checkout>,
       },
     ],
   },

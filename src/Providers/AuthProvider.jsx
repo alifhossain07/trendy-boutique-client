@@ -31,6 +31,11 @@ const AuthProvider = ({ children }) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+
+      const newUser = { email, name, photoURL, role: 'user' }; // Default role
+
+  // Save newUser to your usersCollection in MongoDB
+  await usersCollection.insertOne(newUser);
   
       // Update user profile with display name and photo URL
       await user.updateProfile({

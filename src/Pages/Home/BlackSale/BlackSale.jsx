@@ -34,18 +34,18 @@ const BlackSale = () => {
           {featuredProducts.map((product) => (
             <div
               key={product._id}
-              className="flex-1 bg-white shadow-lg p-6 rounded-lg"
+              className="flex-1 bg-gray-200 shadow-lg p-6 flex-grow rounded-lg"
             >
               <img
                 src={product.image}
                 alt={product.productName}
-                className="w-full h-96 object-cover mb-4"
+                className="w-full h-80 object-cover mb-4"
               />
               <h3 className="text-lg font-semibold font-title tracking-wider mb-2">{product.productName}</h3>
-              <p className="text-gray-600 font-para mb-10">{product.details}</p>
+              <p className="text-gray-600 font-para mb-10 flex-grow">{product.details}</p>
               <div className="flex justify-between text-xl items-center">
-                <span className="text-blue-600 font-bold">${product.price}</span>
-                <span className="bg-red-500 text-white px-2 py-1  rounded">
+                <span className="text-black font-bold">${product.price}</span>
+                <span className="bg-black text-white px-2 py-1  rounded">
                   {product.discount} Off
                 </span>
               </div>

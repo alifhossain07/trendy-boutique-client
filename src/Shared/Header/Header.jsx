@@ -16,6 +16,8 @@ const Header = () => {
   const navigate = useNavigate();
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
   const [isWishlistDrawerOpen, setIsWishlistDrawerOpen] = useState(false);
+
+  
  
   // Fetch cart items using TanStack Query
   const {
@@ -148,6 +150,15 @@ const Header = () => {
     });
   };
 
+  const handleProceedToCheckout = () => {
+
+    const checkoutData = {
+      totalPrice,
+      quantities,
+    };
+    navigate('/checkout',  { state: checkoutData});
+  };
+
   const handleSearch = () => {
     if (searchTerm.trim()) {
       navigate(`/searchresults?query=${searchTerm.trim()}`);
@@ -260,9 +271,11 @@ const Header = () => {
                     {user.email}
                   </span>
                 </Dropdown.Header>
-                <Link to="/admindashboard/dashboardhome">
-                  <Dropdown.Item>Dashboard</Dropdown.Item>
-                </Link>
+                {user.email === "alifhossain56782@gmail.com" && (
+        <Link to="/admindashboard/dashboardhome">
+          <Dropdown.Item>Dashboard</Dropdown.Item>
+        </Link>
+      )}
                 <Link to="/settings">
                   <Dropdown.Item>Settings</Dropdown.Item>
                 </Link>
@@ -336,7 +349,12 @@ const Header = () => {
     {/* Fixed total price and checkout section */}
     <div className="border-t p-4 bg-white sticky bottom-0 w-full">
       <h3 className="text-xl font-semibold">Total Price: ${totalPrice.toFixed(2)}</h3>
-      <Button className="mt-4 bg-green-600 hover:bg-green-500 w-full">Proceed to Checkout</Button>
+      <Button
+        onClick={handleProceedToCheckout}
+        className="mt-4 bg-green-600 hover:bg-green-500 w-full"
+      >
+        Proceed to Checkout
+      </Button>
     </div>
   </div>
 </Drawer>

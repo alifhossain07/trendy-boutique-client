@@ -11,31 +11,31 @@ const Login = () => {
   const navigate = useNavigate(); // Hook for navigation
 
   const handleGoogleLogin = async () => {
-    try {
-      const user = await signInWithGoogle(); // Wait for the result from signInWithGoogle
-      console.log("Google user:", user); // Log user info
-  
-      // Show SweetAlert for successful login
-      await Swal.fire({
-        title: 'Login Successful!',
-        text: 'Welcome to Trendy Boutique!',
-        icon: 'success',
-        confirmButtonText: 'Continue',
-      });
-  
-      navigate("/"); // Redirect to home page after SweetAlert confirmation
-    } catch (error) {
-      console.error("Google Sign-In Error:", error);
-      // Show SweetAlert for error
-      await Swal.fire({
-        title: 'Login Failed!',
-        text: error.message || 'An error occurred. Please try again.',
-        icon: 'error',
-        confirmButtonText: 'Close',
-      });
-    }
-  };
-  
+  try {
+    const user = await signInWithGoogle(); // Wait for the result from signInWithGoogle
+    console.log("Google user:", user); // Log user info
+
+    // Show SweetAlert for successful login
+    await Swal.fire({
+      title: 'Login Successful!',
+      text: 'Welcome to Trendy Boutique!',
+      icon: 'success',
+      confirmButtonText: 'Continue',
+    });
+
+    navigate("/"); // Redirect to home page after SweetAlert confirmation
+  } catch (error) {
+    console.error("Google Sign-In Error:", error);
+    // Show SweetAlert for error
+    await Swal.fire({
+      title: 'Login Failed!',
+      text: error.message || 'An error occurred. Please try again.',
+      icon: 'error',
+      confirmButtonText: 'Close',
+    });
+  }
+};
+
 
   const {
     register,
