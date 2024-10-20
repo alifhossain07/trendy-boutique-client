@@ -12,7 +12,7 @@ import HomeContact from './HomeContact/HomeContact';
 const Home = () => {
     return (
         <div className=''>
-        <div className="w-full py-4 bg-blue-600 text-white">
+        <div className="lg:w-full lg:py-4 py-2 bg-blue-600 text-white">
       <Marquee speed={150} gradient={false}>
         <span className="mx-4 text-lg tracking-wider font-para ml-48 mr-48">
           Shop Above $200 and get 40% Discount on Every Item You Buy

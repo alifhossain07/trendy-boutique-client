@@ -22,7 +22,7 @@ const BlackSale = () => {
       const featuredProducts = products.slice(12, 14);
     
       return (
-        <div className="flex w-10/12 h-[700px] mx-auto flex-col md:flex-row gap-4 py-12 px-6">
+        <div className="flex w-10/12 lg:h-[700px] mx-auto flex-col md:flex-row gap-4 py-12 px-6">
           {/* Black Sale Div */}
           <div className="flex-1 bg-black text-white flex flex-col justify-center items-center p-10">
             <h2 className="text-3xl font-bold mb-16">Black Sale Going On!</h2>

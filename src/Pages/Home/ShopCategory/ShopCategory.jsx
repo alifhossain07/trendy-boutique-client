@@ -19,8 +19,8 @@ const ShopCategory = () => {
   ];
 
   return (
-    <div className="w-11/12 mx-auto py-20">
-      <h1 className="text-2xl lg:text-3xl font-title uppercase tracking-wider font-bold">
+    <div className="w-11/12 mx-auto lg:py-20">
+      <h1 className="text-xl lg:text-3xl font-title uppercase tracking-wider font-bold">
         Shop By <span className="text-blue-700">Categories</span>
       </h1>
 
@@ -28,7 +28,7 @@ const ShopCategory = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
         {categories.map((category, index) => (
           <div key={index} className="relative group">
-            <Card className="!p-0 overflow-hidden h-[600px] rounded-lg">
+            <Card className="!p-0 overflow-hidden h-[400px] lg:h-[600px] rounded-lg">
               {/* Background Image */}
               <div
                 className="absolute inset-0 z-0 w-full h-full bg-cover bg-center object-cover"

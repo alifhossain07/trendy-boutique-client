@@ -4,12 +4,12 @@ import { Carousel } from "flowbite-react";
 const Banner = () => {
   return (
     <div className="mb-10">
-      <div className="h-[650px]">
+      <div className="lg:h-[650px]">
         <Carousel
           slideInterval={5000}
           theme={{
             root: {
-              base: "relative h-full w-full",
+              base: "relative lg:h-full w-full",
               leftControl:
                 "absolute left-0 top-0 flex h-full items-center justify-center px-4 focus:outline-none",
               rightControl:
@@ -42,7 +42,7 @@ const Banner = () => {
           }}
         >
           {/* Slide 1 */}
-          <div className="relative h-full">
+          <div className="relative lg:h-full">
             <img
               src="https://i.ibb.co.com/ystyGHM/menB.png"
               alt="Banner 1"
@@ -52,7 +52,7 @@ const Banner = () => {
           </div>
 
           {/* Slide 2 */}
-          <div className="relative h-full">
+          <div className="relative lg:h-full">
             <img
               src="https://i.ibb.co.com/82FnqXc/womenB.png"
               alt="Banner 2"
@@ -62,7 +62,7 @@ const Banner = () => {
           </div>
 
           {/* Slide 3 */}
-          <div className="relative h-full">
+          <div className="relative lg:h-full">
             <img
               src="https://i.ibb.co.com/n75ddGV/accessories-B.png"
               alt="Banner 3"
