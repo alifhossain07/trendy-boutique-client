@@ -229,9 +229,9 @@ const Shop = () => {
       </div>
 
       {/* Shopping Section */}
-      <div className="flex w-11/12 mx-auto py-20 gap-10">
+      <div className="flex flex-col lg:flex-row w-11/12 mx-auto py-20 gap-10">
         {/* Filter Section */}
-        <div className="bg-gray-100 w-1/4 p-4">
+        <div className="bg-gray-100 lg:w-1/4 p-4">
           <h2 className="font-title text-2xl mb-4">Categories</h2>
           <div className="flex flex-col mb-4">
             <button
@@ -304,7 +304,7 @@ const Shop = () => {
         </div>
 
         {/* Products Section */}
-        <div className="grid grid-cols-3 gap-4 w-3/4">
+        <div className="grid lg:grid-cols-3 gap-4 lg:w-3/4">
           {filteredProducts.map((product) => (
             <div
   key={product.productName}

@@ -50,7 +50,7 @@ const testimonials = [
 const Testimonial = () => {
   return (
     <div className="w-11/12 mx-auto py-20">
-      <h1 className="text-3xl font-title tracking-wider font-bold mb-20">
+      <h1 className="lg:text-3xl text-xl font-title tracking-wider font-bold mb-20">
         What Our <span className="text-blue-600">Clients</span> Say
       </h1>
 

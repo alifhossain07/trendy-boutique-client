@@ -32,47 +32,65 @@ const DealOfTheDay = () => {
   }, []);
 
   return (
+    <div className="bg-gray-100 flex flex-col lg:flex-row justify-center  items-center py-10 lg:py-20 px-4">
+      <div className="flex flex-col space-y-5 items-center justi text-center lg:text-left lg:items-start">
+        <h1 className="text-2xl lg:text-3xl font-title tracking-wider font-bold">
+          Deal of the Day
+        </h1>
+        <p className="text-lg lg:text-xl tracking-wider font-para">
+          Get 40% on All Items if you buy more than $200 worth of items
+        </p>
+        <div className="text-lg lg:text-2xl tracking-wider font-para mb-4 mt-6 lg:mt-10">
+          Hurry up! Sale ends in:
+        </div>
 
-    <div className="bg-gray-100 flex justify-center gap-20 items-center py-20">
-    <div className=" flex flex-col space-y-5 items-center ">
-      <h1 className="text-3xl font-title tracking-wider font-bold ">Deal of the Day</h1>
-      <p className="text-xl tracking-wider font-para">Get 40% on All Items if you buy more than $200 worth items</p>
-      <div className="text-2xl tracking-wider font-para mb-4 mt-10 py-5">
-        Hurry up! Sale ends in:
+        <div className="flex space-x-2 lg:space-x-4 text-center">
+          <div className="flex flex-col bg-blue-600 text-white p-2 lg:p-4 rounded-lg">
+            <span className="text-3xl lg:text-4xl font-bold">
+              {timeLeft.days || "00"}
+            </span>
+            <span className="text-sm lg:text-lg">Days</span>
+          </div>
+
+          <div className="flex flex-col bg-blue-600 text-white p-2 lg:p-4 rounded-lg">
+            <span className="text-3xl lg:text-4xl font-bold">
+              {timeLeft.hours || "00"}
+            </span>
+            <span className="text-sm lg:text-lg">Hours</span>
+          </div>
+
+          <div className="flex flex-col bg-blue-600 text-white p-2 lg:p-4 rounded-lg">
+            <span className="text-3xl lg:text-4xl font-bold">
+              {timeLeft.minutes || "00"}
+            </span>
+            <span className="text-sm lg:text-lg">Minutes</span>
+          </div>
+
+          <div className="flex flex-col bg-blue-600 text-white p-2 lg:p-4 rounded-lg">
+            <span className="text-3xl lg:text-4xl font-bold">
+              {timeLeft.seconds || "00"}
+            </span>
+            <span className="text-sm lg:text-lg">Seconds</span>
+          </div>
+        </div>
+
+        <div className="mt-8 lg:mt-10">
+          <Link to="/shop">
+            <Button className="bg-blue-500 hover:!bg-blue-400 px-8 lg:px-10 mt-6 lg:mt-10 !text-lg lg:!text-xl">
+              Shop Now
+            </Button>
+          </Link>
+        </div>
       </div>
 
-      <div className="flex space-x-4 text-center">
-        <div className="flex flex-col bg-blue-600 text-white p-4 rounded-lg">
-          <span className="text-4xl font-bold">{timeLeft.days || "00"}</span>
-          <span className="text-lg">Days</span>
-        </div>
-
-        <div className="flex flex-col bg-blue-600 text-white p-4 rounded-lg">
-          <span className="text-4xl font-bold">{timeLeft.hours || "00"}</span>
-          <span className="text-lg">Hours</span>
-        </div>
-
-        <div className="flex flex-col bg-blue-600 text-white p-4 rounded-lg">
-          <span className="text-4xl font-bold">{timeLeft.minutes || "00"}</span>
-          <span className="text-lg">Minutes</span>
-        </div>
-
-        <div className="flex flex-col bg-blue-600 text-white p-4 rounded-lg">
-          <span className="text-4xl font-bold">{timeLeft.seconds || "00"}</span>
-          <span className="text-lg">Seconds</span>
-        </div>
-      </div>
-
-      <div className="mt-10">
-      <Link to='/shop'><Button className="bg-blue-500 hover:!bg-blue-400 px-10 mt-10 !text-xl">Shop Now</Button></Link>
-    
+      <div className="mt-8 lg:mt-0">
+        <img
+          src="https://i.ibb.co.com/PD6GcvL/DOTD.png"
+          alt=""
+          className="w-64 lg:w-auto"
+        />
       </div>
     </div>
-        <div>
-            <img src="https://i.ibb.co.com/PD6GcvL/DOTD.png" alt="" />
-        </div>
-    </div>
-    
   );
 };
 

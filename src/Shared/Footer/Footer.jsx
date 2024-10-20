@@ -16,7 +16,7 @@ const Footer = () => {
           {/* Header section */}
           <div className="grid w-full justify-between sm:flex sm:justify-between md:flex md:grid-cols-1">
             <div className="ml-20">
-              <img className="w-3/12" src="https://i.ibb.co.com/drCQPSv/mlogo1.png" alt="" />
+              <img className=" lg:w-3/12 w-44 mb-10" src="https://i.ibb.co.com/drCQPSv/mlogo1.png" alt="" />
             </div>
             <div className="grid grid-cols-2 gap-8 sm:mt-4 sm:grid-cols-3 sm:gap-6">
               {/* About section */}
@@ -47,18 +47,7 @@ const Footer = () => {
                   </FlowbiteFooter.Link>
                 </FlowbiteFooter.LinkGroup>
               </div>
-              {/* Legal section */}
-              <div>
-                <FlowbiteFooter.Title title="Legal" />
-                <FlowbiteFooter.LinkGroup col>
-                  <FlowbiteFooter.Link href="/privacy-policy">
-                    Privacy Policy
-                  </FlowbiteFooter.Link>
-                  <FlowbiteFooter.Link href="/terms">
-                    Terms & Conditions
-                  </FlowbiteFooter.Link>
-                </FlowbiteFooter.LinkGroup>
-              </div>
+             
             </div>
           </div>
           <FlowbiteFooter.Divider />
