@@ -28,7 +28,7 @@ const Header = () => {
     queryKey: ["cartItems", user?.email], // Unique key for the query
     queryFn: async () => {
       if (user?.email) {
-        const response = await axios.get("http://localhost:5000/cart", {
+        const response = await axios.get("https://trendy-boutique-server.vercel.app/cart", {
           params: { userEmail: user.email },
         });
         return response.data;
@@ -77,7 +77,7 @@ const Header = () => {
     queryKey: ["wishlistItems", user?.email],
     queryFn: async () => {
       if (user?.email) {
-        const response = await axios.get("http://localhost:5000/wishlist", {
+        const response = await axios.get("https://trendy-boutique-server.vercel.app/wishlist", {
           params: { userEmail: user.email },
         });
         return response.data;
@@ -98,7 +98,7 @@ const Header = () => {
 
   const handleRemoveFromCart = async (productId) => {
     try {
-      await axios.delete("http://localhost:5000/cart", {
+      await axios.delete("https://trendy-boutique-server.vercel.app/cart", {
         params: { userEmail: user.email, productId: productId },
       });
       refetchCart(); // Refetch cart items after removal
@@ -110,7 +110,7 @@ const Header = () => {
   };
   const handleRemoveFromWishlist = async (productId) => {
     try {
-      await axios.delete("http://localhost:5000/wishlist", {
+      await axios.delete("https://trendy-boutique-server.vercel.app/wishlist", {
         params: { userEmail: user.email, productId: productId },
       });
       refetchWishlist(); // Refetch wishlist items after removal

@@ -11,7 +11,7 @@ const AddProduct = () => {
   const mutation = useMutation({
     mutationFn: async (newProduct) => {
       const response = await axios.post(
-        "http://localhost:5000/products",
+        "https://trendy-boutique-server.vercel.app/products",
         newProduct
       );
       return response.data;

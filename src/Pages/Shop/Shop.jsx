@@ -25,7 +25,7 @@ const Shop = () => {
   const { data: products = [], error } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:5000/products");
+      const response = await axios.get("https://trendy-boutique-server.vercel.app/products");
       return response.data;
     },
   });
@@ -36,7 +36,7 @@ const Shop = () => {
     queryFn: async () => {
       if (!user || !user.email) return [];
       const response = await axios.get(
-        `http://localhost:5000/cart?userEmail=${user.email}`
+        `https://trendy-boutique-server.vercel.app/cart?userEmail=${user.email}`
       );
       return response.data;
     },
@@ -129,7 +129,7 @@ const Shop = () => {
       if (!user || !user.email) {
         throw new Error("Not logged in");
       }
-      return await axios.post("http://localhost:5000/cart", {
+      return await axios.post("https://trendy-boutique-server.vercel.app/cart", {
         productName: product.productName,
         price: product.price,
         image: product.image,
@@ -175,7 +175,7 @@ const Shop = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/wishlist", {
+      const response = await axios.post("https://trendy-boutique-server.vercel.app/wishlist", {
         productName: product.productName,
         price: product.price,
         image: product.image,

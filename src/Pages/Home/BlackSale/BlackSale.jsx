@@ -9,7 +9,7 @@ const BlackSale = () => {
     useEffect(() => {
         // Fetch products from the API
         axios
-          .get("http://localhost:5000/products")
+          .get("https://trendy-boutique-server.vercel.app/products")
           .then((response) => {
             setProducts(response.data); // Assuming response.data is an array of products
           })

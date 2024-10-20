@@ -5,19 +5,19 @@ import Swal from 'sweetalert2'; // Import SweetAlert2
 
 // Fetch products function
 const fetchProducts = async () => {
-  const { data } = await axios.get('http://localhost:5000/products');
+  const { data } = await axios.get('https://trendy-boutique-server.vercel.app/products');
   return data;
 };
 
 // Update product function
 const updateProduct = async ({ productId, updatedProduct }) => {
-  const { data } = await axios.put(`http://localhost:5000/products/${productId}`, updatedProduct);
+  const { data } = await axios.put(`https://trendy-boutique-server.vercel.app/products/${productId}`, updatedProduct);
   return data;
 };
 
 // Delete product function
 const deleteProduct = async (productId) => {
-  await axios.delete(`http://localhost:5000/products/${productId}`);
+  await axios.delete(`https://trendy-boutique-server.vercel.app/products/${productId}`);
 };
 
 const ProductsManagement = () => {

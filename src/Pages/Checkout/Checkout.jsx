@@ -36,7 +36,7 @@ const Checkout = () => {
     const { data: cartItems = [], isLoading } = useQuery({
         queryKey: ["cartItems", userEmail],
         queryFn: async () => {
-            const res = await axios.get(`http://localhost:5000/cart/${userEmail}`);
+            const res = await axios.get(`https://trendy-boutique-server.vercel.app/cart/${userEmail}`);
             return res.data;
         },
     });
@@ -78,7 +78,7 @@ const Checkout = () => {
         console.log("Checkout form data with total price and product quantities:", orderData);
 
         // try {
-        //     const response = await fetch("http://localhost:5000/order", {
+        //     const response = await fetch("https://trendy-boutique-server.vercel.app/order", {
         //         method: "POST",
         //         headers: {
         //             "Content-Type": "application/json",
