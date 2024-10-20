@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Card } from "flowbite-react";
+import { Link } from "react-router-dom";
 
 const ShopCategory = () => {
   const categories = [
@@ -42,12 +43,13 @@ const ShopCategory = () => {
               {/* Content (Bottom-Centered) */}
               <div className="absolute bottom-0 z-10 flex flex-col items-center justify-center text-white text-center p-5 pr-16 mx-auto w-full">
                 <h3 className=" font-title tracking-wider text-2xl font-bold mb-4 z-20">{category.name}</h3>
-                <Button
+                <Link to='/shop'><Button
                   
                   className="bg-white text-black hover:!bg-blue-300 z-20"
                 >
                   Shop Now
-                </Button>
+                </Button></Link>
+                
               </div>
             </Card>
           </div>

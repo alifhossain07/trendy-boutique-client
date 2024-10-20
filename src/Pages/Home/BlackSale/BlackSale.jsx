@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import { Link } from "react-router-dom";
 
 
 
@@ -25,9 +26,12 @@ const BlackSale = () => {
           {/* Black Sale Div */}
           <div className="flex-1 bg-black text-white flex flex-col justify-center items-center p-10">
             <h2 className="text-3xl font-bold mb-16">Black Sale Going On!</h2>
+            <Link to="/shop">
             <button className="bg-white text-black hover:bg-blue-400 px-6 py-2 font-semibold rounded">
               Shop Now
             </button>
+            </Link>
+            
           </div>
     
           {/* Featured Products */}

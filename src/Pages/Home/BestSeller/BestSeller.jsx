@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Card } from "flowbite-react";
+import { Link } from "react-router-dom";
 
 const BestSeller = () => {
   const products = [
@@ -52,7 +53,10 @@ const BestSeller = () => {
                   <h3 className="text-xl font-title font-bold">{product.name}</h3>
                   <p className="font-para text-lg text-blue-700">{product.price}</p>
                 </div>
-                <Button className="bg-blue-500 hover:!bg-blue-400">Buy now</Button>
+                <Link to='/shop'>
+                <Button className="bg-blue-500 hover:!bg-blue-400 w-full">Buy now</Button>
+                </Link>
+                
               </Card>
             ))}
           </div>
@@ -72,7 +76,9 @@ const BestSeller = () => {
                   <h3 className="text-xl font-title font-bold">{product.name}</h3>
                   <p className="font-para text-lg text-blue-700">{product.price}</p>
                 </div>
-                <Button className="bg-blue-500 hover:!bg-blue-400">Buy now</Button>
+                <Link to='/shop'>
+                <Button className="bg-blue-500 hover:!bg-blue-400 w-full">Buy now</Button>
+                </Link>
               </Card>
             ))}
           </div>

@@ -275,13 +275,19 @@ const Header = () => {
         <Link to="/admindashboard/dashboardhome">
           <Dropdown.Item>Dashboard</Dropdown.Item>
         </Link>
-      )}
-                <Link to="/settings">
-                  <Dropdown.Item>Settings</Dropdown.Item>
+      )}  
+                <div className="lg:hidden md:hidden">
+                <Link to="/">
+                  <Dropdown.Item>Home</Dropdown.Item>
                 </Link>
-                <Link to="/earnings">
-                  <Dropdown.Item>Earnings</Dropdown.Item>
+                <Link to="/aboutus">
+                  <Dropdown.Item>About</Dropdown.Item>
                 </Link>
+                <Link to="/shop">
+                  <Dropdown.Item>Shop</Dropdown.Item>
+                </Link>
+                </div>
+
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
               </>

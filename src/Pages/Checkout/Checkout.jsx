@@ -8,16 +8,7 @@ const Checkout = () => {
     const { user } = useContext(AuthContext); // Access user from AuthContext
     const userEmail = user ? user.email : "";
 
-    // Fetch cart items using TanStack Query
-    const { data: cartItems = [], isLoading } = useQuery({
-        queryKey: ["cartItems", userEmail],
-        queryFn: async () => {
-            const res = await axios.get(`http://localhost:5000/cart/${userEmail}`);
-            return res.data;
-        },
-    });
-
-    if (isLoading) return <div>Loading...</div>;
+    
 
     const location = useLocation();
     const { totalPrice = 0, quantities = {} } = location.state || {}; // Ensure quantities is always an object
@@ -41,6 +32,16 @@ const Checkout = () => {
             [name]: value,
         }));
     };
+    // Fetch cart items using TanStack Query
+    const { data: cartItems = [], isLoading } = useQuery({
+        queryKey: ["cartItems", userEmail],
+        queryFn: async () => {
+            const res = await axios.get(`http://localhost:5000/cart/${userEmail}`);
+            return res.data;
+        },
+    });
+
+    if (isLoading) return <div>Loading...</div>;
 
     const shippingFee = 8.0; // Change this value if necessary
     const total = totalPrice + shippingFee;

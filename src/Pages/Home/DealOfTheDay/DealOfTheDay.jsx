@@ -1,5 +1,6 @@
 import { Button } from "flowbite-react";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const DealOfTheDay = () => {
   const calculateTimeLeft = () => {
@@ -63,7 +64,8 @@ const DealOfTheDay = () => {
       </div>
 
       <div className="mt-10">
-      <Button className="bg-blue-500 hover:!bg-blue-400 px-10 mt-10 !text-xl">Shop Now</Button>
+      <Link to='/shop'><Button className="bg-blue-500 hover:!bg-blue-400 px-10 mt-10 !text-xl">Shop Now</Button></Link>
+    
       </div>
     </div>
         <div>
