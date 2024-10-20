@@ -12,8 +12,8 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="flex">
-      <Sidebar className="h-screen w-64 bg-gray-800 text-white">
+    <div className="flex flex-col lg:flex-row">
+      <Sidebar className="lg:h-screen lg:w-64 bg-gray-800 text-white">
         <Sidebar.Items>
           <Sidebar.ItemGroup>
             <Sidebar.Item as={Link} to="/admindashboard/dashboardhome" icon={HiOutlineChartBar}>

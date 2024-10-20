@@ -159,43 +159,45 @@ const ProductsManagement = () => {
             <Spinner color="purple" aria-label="Loading..." />
           </div>
         ) : (
-          <Table hoverable={true}>
-            <Table.Head>
-              <Table.HeadCell>Serial No</Table.HeadCell>
-              <Table.HeadCell>Product Name</Table.HeadCell>
-              <Table.HeadCell>Price</Table.HeadCell>
-              <Table.HeadCell>Rating</Table.HeadCell>
-              <Table.HeadCell>Category</Table.HeadCell>
-              <Table.HeadCell>Sub Category</Table.HeadCell>
-              <Table.HeadCell>Actions</Table.HeadCell>
-            </Table.Head>
-            <Table.Body className="divide-y">
-              {products.map((product, index) => (
-                <Table.Row key={product._id} className="bg-white">
-                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900">
-                    {index + 1}
-                  </Table.Cell>
-                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900">
-                    {product.productName}
-                  </Table.Cell>
-                  <Table.Cell>${product.price}</Table.Cell>
-                  <Table.Cell>{product.rating}</Table.Cell>
-                  <Table.Cell>{product.category}</Table.Cell>
-                  <Table.Cell>{product.subcategory}</Table.Cell>
-                  <Table.Cell>
-                    <div className="flex space-x-2">
-                      <Button size="xs" className="bg-blue-500 text-white" onClick={() => handleUpdateClick(product)}>
-                        Update
-                      </Button>
-                      <Button size="xs" className="bg-red-500 text-white" onClick={() => handleDelete(product._id)}>
-                        Delete
-                      </Button>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
+          <div className="overflow-x-auto">
+            <Table hoverable={true}>
+              <Table.Head>
+                <Table.HeadCell>Serial No</Table.HeadCell>
+                <Table.HeadCell>Product Name</Table.HeadCell>
+                <Table.HeadCell>Price</Table.HeadCell>
+                <Table.HeadCell>Rating</Table.HeadCell>
+                <Table.HeadCell>Category</Table.HeadCell>
+                <Table.HeadCell>Sub Category</Table.HeadCell>
+                <Table.HeadCell>Actions</Table.HeadCell>
+              </Table.Head>
+              <Table.Body className="divide-y">
+                {products.map((product, index) => (
+                  <Table.Row key={product._id} className="bg-white">
+                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900">
+                      {index + 1}
+                    </Table.Cell>
+                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900">
+                      {product.productName}
+                    </Table.Cell>
+                    <Table.Cell>${product.price}</Table.Cell>
+                    <Table.Cell>{product.rating}</Table.Cell>
+                    <Table.Cell>{product.category}</Table.Cell>
+                    <Table.Cell>{product.subcategory}</Table.Cell>
+                    <Table.Cell>
+                      <div className="flex space-x-2">
+                        <Button size="xs" className="bg-blue-500 text-white" onClick={() => handleUpdateClick(product)}>
+                          Update
+                        </Button>
+                        <Button size="xs" className="bg-red-500 text-white" onClick={() => handleDelete(product._id)}>
+                          Delete
+                        </Button>
+                      </div>
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
+          </div>
         )}
       </div>
 
@@ -220,11 +222,13 @@ const ProductsManagement = () => {
               </div>
               <div className="flex items-center">
                 <Checkbox name="isDiscount" checked={updatedProductData.isDiscount} onChange={handleCheckboxChange} />
-                <label className="ml-2">Is Discounted</label>
+                <label className="ml-2">Discount Available</label>
               </div>
             </div>
             <div className="mt-4">
-              <Button type="submit" className="bg-blue-500 text-white">Update Product</Button>
+              <Button type="submit" color="success">
+                Update Product
+              </Button>
             </div>
           </form>
         </Modal.Body>
